@@ -1,0 +1,15 @@
+*.nuget.dgspec.json
+*.nuget.g.props
+*.nuget.g.targets
+project.nuget.cache
+
+.vs/
+/bin/
+/obj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+**/obj/
+**/bin/

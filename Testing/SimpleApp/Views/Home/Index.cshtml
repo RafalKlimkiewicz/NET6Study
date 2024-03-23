@@ -1,0 +1,22 @@
+﻿@using SimpleApp.Models
+@model IEnumerable<Product>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=devie-width" />
+    <title>Simple App</title>
+</head>
+<body>
+    <ul>
+        @foreach (var product in Model ?? Enumerable.Empty<Product>())
+        {
+            <li> Name: @product.Name, Price: @product.Price</li>
+        }
+    </ul>
+</body>
+</html>
