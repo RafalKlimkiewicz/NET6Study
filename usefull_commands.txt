@@ -1,0 +1,16 @@
+
+
+git remote add origin adres_url_zdalnego_repozytorium
+git push -u origin master
+
+
+#new sln
+dotnet new sln -n NazwaSolucji
+
+#new proj
+dotnet new console -o NazwaProjektu --framework net6.0
+dotnet new web --no-https -o NazwaProjektu --framework net6.0
+
+
+#add project to sln
+dotnet sln add NazwaProjektu/NazwaProjektu.csproj
