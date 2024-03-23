@@ -10,7 +10,7 @@ dotnet new sln -n NazwaSolucji
 #new proj
 dotnet new console -o NazwaProjektu --framework net6.0
 dotnet new web --no-https -o NazwaProjektu --framework net6.0
-
+dotnet globaljson --sdk-version 6.0.420 --o nazwaSciezki
 
 #add project to sln
 dotnet sln add NazwaProjektu/NazwaProjektu.csproj
