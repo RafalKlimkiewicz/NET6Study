@@ -16,3 +16,6 @@ dotnet globaljson --sdk-version 6.0.420 --o nazwaSciezki
 dotnet sln add NazwaProjektu/NazwaProjektu.csproj
 
 dotnet add proj reference sln ?
+
+#EF
+dotnet ef migrations add Initial

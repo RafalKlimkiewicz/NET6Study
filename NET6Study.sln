@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SportsStore", "SportsStore"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportsStore", "SportsStore\SportsStore\SportsStore.csproj", "{37337216-786F-47C7-B23B-C656BFCB179B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsStore.Tests", "SportsStore\Tests\SportsStore.Tests\SportsStore.Tests.csproj", "{C200A04E-C28D-41B3-B743-D4934F20CDFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportsStore.Tests", "SportsStore\Tests\SportsStore.Tests\SportsStore.Tests.csproj", "{C200A04E-C28D-41B3-B743-D4934F20CDFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
