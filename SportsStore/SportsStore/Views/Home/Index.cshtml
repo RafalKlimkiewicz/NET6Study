@@ -1,13 +1,15 @@
-﻿@model IQueryable<Product>
+﻿@model ProductsListViewModel
 
 <h1>Welcome to SportsStore</h1>
 
-@foreach (var p in @Model ?? Enumerable.Empty<Product>())
+@foreach (var p in @Model?.Products ?? Enumerable.Empty<Product>())
 {
     <div>
         <h3>@p.Name</h3>
         @p.Description
-        <h4>@p.Price.ToString("")</h4>
+        <h4>@p.Price.ToString("c")</h4>
     </div>
 }
+
+<div page-model="@Model?.PagingInfo" page-action="Index"></div>
 
