@@ -10,10 +10,12 @@ builder.Services.AddDbContext<StoreDbContext>(opts =>
     opts.UseSqlServer(builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
 });
 
-builder.Services.AddScoped<IStoreRepository, EFStoreRepository>(); ;
+builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
 builder.Services.AddRazorPages();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+builder.Services.AddScoped(sp => SessionCart.GetCart(sp));
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 

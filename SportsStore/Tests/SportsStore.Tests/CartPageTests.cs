@@ -1,10 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Routing;
-using Moq;
+﻿using Moq;
 using SportsStore.Models;
 using SportsStore.Pages;
 
@@ -28,26 +22,26 @@ namespace SportsStore.Tests
             testCart.AddItem(p1, 2);
             testCart.AddItem(p2, 1);
 
-            var mockSession = new Mock<ISession>();
+            //var mockSession = new Mock<ISession>();
 
-            var data = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(testCart));
+            //var data = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(testCart));
 
-            mockSession.Setup(c => c.TryGetValue(It.IsAny<string>(), out data));
+            //mockSession.Setup(c => c.TryGetValue(It.IsAny<string>(), out data));
 
-            var mockContext = new Mock<HttpContext>();
-            mockContext.SetupGet(c => c.Session).Returns(mockSession.Object);
+            //var mockContext = new Mock<HttpContext>();
+            //mockContext.SetupGet(c => c.Session).Returns(mockSession.Object);
 
             //Act
-            var cartModel = new CartModel(mockRepository.Object)
-            {
-                PageContext = new PageContext(
-                    new ActionContext
-                    {
-                        HttpContext = mockContext.Object,
-                        RouteData = new RouteData(),
-                        ActionDescriptor = new PageActionDescriptor()
-                    })
-            };
+            var cartModel = new CartModel(mockRepository.Object, testCart);
+            //{
+            //    PageContext = new PageContext(
+            //        new ActionContext
+            //        {
+            //            HttpContext = mockContext.Object,
+            //            RouteData = new RouteData(),
+            //            ActionDescriptor = new PageActionDescriptor()
+            //        })
+            //};
 
             cartModel.OnGet("myUrl");
 
@@ -69,30 +63,30 @@ namespace SportsStore.Tests
 
             var testCart = new Cart();
 
-            var mockSession = new Mock<ISession>();
+            //var mockSession = new Mock<ISession>();
 
-            var data = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(testCart));
+            //var data = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(testCart));
 
-            mockSession.Setup(c => c.Set(It.IsAny<string>(), It.IsAny<byte[]>()))
-                .Callback<string, byte[]>((key, value) =>
-                {
-                    testCart = JsonSerializer.Deserialize<Cart>(Encoding.UTF8.GetString(value));
-                });
+            //mockSession.Setup(c => c.Set(It.IsAny<string>(), It.IsAny<byte[]>()))
+            //    .Callback<string, byte[]>((key, value) =>
+            //    {
+            //        testCart = JsonSerializer.Deserialize<Cart>(Encoding.UTF8.GetString(value));
+            //    });
 
-            var mockContext = new Mock<HttpContext>();
-            mockContext.SetupGet(c => c.Session).Returns(mockSession.Object);
+            //var mockContext = new Mock<HttpContext>();
+            //mockContext.SetupGet(c => c.Session).Returns(mockSession.Object);
 
             //Act
-            var cartModel = new CartModel(mockRepository.Object)
-            {
-                PageContext = new PageContext(
-                    new ActionContext
-                    {
-                        HttpContext = mockContext.Object,
-                        RouteData = new RouteData(),
-                        ActionDescriptor = new PageActionDescriptor()
-                    })
-            };
+            var cartModel = new CartModel(mockRepository.Object, testCart);
+            //{
+            //    PageContext = new PageContext(
+            //        new ActionContext
+            //        {
+            //            HttpContext = mockContext.Object,
+            //            RouteData = new RouteData(),
+            //            ActionDescriptor = new PageActionDescriptor()
+            //        })
+            //};
 
             cartModel.OnPost(1, "myUrl");
 
