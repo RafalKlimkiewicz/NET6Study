@@ -12,6 +12,5 @@ namespace SportsStore.Infrastructure
 
             return sessionData == null ? default : JsonSerializer.Deserialize<T>(sessionData);
         }
-
     }
 }
