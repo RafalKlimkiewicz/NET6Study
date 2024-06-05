@@ -7,6 +7,7 @@ namespace SportsStore.Models
     {
         [BindNever]
         public int OrderID { get; set; }
+
         [BindNever]
         public ICollection<CartLine> Lines { get; set; } = new List<CartLine>();
 
@@ -15,7 +16,9 @@ namespace SportsStore.Models
 
         [Required(ErrorMessage = "Please enter the first address line")]
         public string? Line1 { get; set; }
+
         public string? Line2 { get; set; }
+
         public string? Line3 { get; set; }
 
         [Required(ErrorMessage = "Please enter a city name")]
