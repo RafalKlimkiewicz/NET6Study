@@ -2,6 +2,6 @@
 {
     public interface IOrderRepository
     {
-        IQueryable<Order> Products { get; }
+        IQueryable<Order> Orders { get; }
     }
 }
