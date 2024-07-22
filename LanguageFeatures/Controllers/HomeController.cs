@@ -118,6 +118,7 @@ namespace LanguageFeatures.Controllers
                 new Product { Name = "Corner flag", Price = 34.95M });
 
             return View(productArray.Select(p => $"{nameof(p.Name)}: {p.Name}, {nameof(p.Price)}: {p.Price}"));
+
             return View(cart.Names);
 
             return View("Index", new string[] {
