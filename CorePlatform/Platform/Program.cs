@@ -15,6 +15,14 @@ var app = builder.Build();
 //app.UseMiddleware<Population>();
 //app.UseMiddleware<Capital>();
 
+app.MapGet("files/{filename}.{ext}", async context =>
+{
+    await context.Response.WriteAsync("Request was Routed\n");
+
+    foreach (var kvp in context.Request.RouteValues)
+        await context.Response.WriteAsync($"{kvp.Key}: {kvp.Value}\n");
+});
+
 app.MapGet("{first}/{second}/{third}", async context =>
 {
     await context.Response.WriteAsync("Request was Routed\n");
@@ -23,8 +31,8 @@ app.MapGet("{first}/{second}/{third}", async context =>
         await context.Response.WriteAsync($"{route.Key}: {route.Value}\n");
 });
 
-app.MapGet("capital/{country}", Capital.Endpoint);
-app.MapGet("size/{city}", Population.Endpoint)
+app.MapGet("capital/{country=France}", Capital.Endpoint);
+app.MapGet("size/{city?}", Population.Endpoint)
     .WithMetadata(new RouteNameMetadata("population"));
 
 //app.UseRouting();
