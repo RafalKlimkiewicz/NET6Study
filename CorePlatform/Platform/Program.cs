@@ -1,3 +1,4 @@
+using Platform.Classes;
 using Platform.Middlewares;
 using Platform.Services;
 
@@ -17,7 +18,8 @@ app.MapGet("middleware/function", async (HttpContext context, HtmlResponseFormat
 });
 
 //app.MapGet("endpoint/class", WeatherEndpoint.Endpoint);
-app.MapWeather("endpoint/class");
+//app.MapWeather("endpoint/class");
+app.MapEndpoint<WeatherEndpoint>("endpoint/class");
 
 app.MapGet("endpoint/function", async (HttpContext context, HtmlResponseFormatter formatter) =>
 {
