@@ -4,7 +4,7 @@ using Platform.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IResponseFormatter, HtmlResponseFormatter>();
+builder.Services.AddTransient<IResponseFormatter, GuidService>();
 
 var app = builder.Build();
 
@@ -12,7 +12,7 @@ app.MapGet("/", () => "Hello World!");
 
 app.UseMiddleware<WeatherMiddleware>();
 
-app.MapGet("middleware/function", async (HttpContext context, HtmlResponseFormatter formatter) =>
+app.MapGet("middleware/function", async (HttpContext context, IResponseFormatter formatter) =>
 {
     await formatter.Format(context, "Middleware Function: It is snowing in Chicago");
 });
@@ -21,7 +21,7 @@ app.MapGet("middleware/function", async (HttpContext context, HtmlResponseFormat
 //app.MapWeather("endpoint/class");
 app.MapEndpoint<WeatherEndpoint>("endpoint/class");
 
-app.MapGet("endpoint/function", async (HttpContext context, HtmlResponseFormatter formatter) =>
+app.MapGet("endpoint/function", async (HttpContext context, IResponseFormatter formatter) =>
 {
     await formatter.Format(context, "Endpoint Function: It is sunny in LA");
 });
