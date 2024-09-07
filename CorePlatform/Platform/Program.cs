@@ -1,10 +1,12 @@
 using Platform.Classes;
 using Platform.Middlewares;
 using Platform.Services;
+using Platform.Services.ChainDependency;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IResponseFormatter, GuidService>();
+builder.Services.AddScoped<IResponseFormatter, TimeResponseFormatter>();
+builder.Services.AddScoped<ITimeStamper, DefaultTimeStamper>();
 
 var app = builder.Build();
 
