@@ -5,8 +5,25 @@ using Platform.Services.ChainDependency;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IResponseFormatter, TimeResponseFormatter>();
-builder.Services.AddScoped<ITimeStamper, DefaultTimeStamper>();
+var env = builder.Environment;
+var config = builder.Configuration;
+
+if (env.IsDevelopment())
+{
+    //builder.Services.AddScoped<IResponseFormatter, TimeResponseFormatter>();
+    //builder.Services.AddScoped<ITimeStamper, DefaultTimeStamper>();
+
+    builder.Services.AddScoped<IResponseFormatter>(serviceProvider =>
+    {
+        string? typeName = config["services:IResponseFormatter"];
+
+        return (IResponseFormatter)ActivatorUtilities.CreateInstance(serviceProvider, typeName == null ? typeof(GuidService) : Type.GetType(typeName, true)!);
+    });
+}
+else
+{
+    builder.Services.AddScoped<IResponseFormatter, HtmlResponseFormatter>();
+}
 
 var app = builder.Build();
 
