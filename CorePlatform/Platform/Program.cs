@@ -10,15 +10,18 @@ var config = builder.Configuration;
 
 if (env.IsDevelopment())
 {
+    builder.Services.AddScoped<IResponseFormatter, TextResponseFormatter>();
+    builder.Services.AddScoped<IResponseFormatter, HtmlResponseFormatter>();
+    builder.Services.AddScoped<IResponseFormatter, GuidService>();
     //builder.Services.AddScoped<IResponseFormatter, TimeResponseFormatter>();
     //builder.Services.AddScoped<ITimeStamper, DefaultTimeStamper>();
 
-    builder.Services.AddScoped<IResponseFormatter>(serviceProvider =>
-    {
-        string? typeName = config["services:IResponseFormatter"];
+    //builder.Services.AddScoped(serviceProvider =>
+    //{
+    //    string? typeName = config["services:IResponseFormatter"];
 
-        return (IResponseFormatter)ActivatorUtilities.CreateInstance(serviceProvider, typeName == null ? typeof(GuidService) : Type.GetType(typeName, true)!);
-    });
+    //    return (IResponseFormatter)ActivatorUtilities.CreateInstance(serviceProvider, typeName == null ? typeof(GuidService) : Type.GetType(typeName, true)!);
+    //});
 }
 else
 {
@@ -27,29 +30,48 @@ else
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
-
-app.UseMiddleware<WeatherMiddleware>();
-app.MapEndpoint<WeatherEndpoint>("endpoint/class");
-
-app.MapGet("middleware/function", async (HttpContext context, IResponseFormatter formatter) =>
+app.MapGet("single", async context =>
 {
-    await formatter.Format(context, "Middleware Function: It is snowing in Chicago");
+    var formatter = context.RequestServices.GetRequiredService<IResponseFormatter>();
+
+    await formatter.Format(context, "Single Service");
 });
 
-//app.MapGet("endpoint/class", WeatherEndpoint.Endpoint);
-//app.MapWeather("endpoint/class");
-
-app.MapGet("endpoint/function", async (HttpContext context) =>
+app.MapGet("/", async context =>
 {
-    IResponseFormatter formatter = context.RequestServices.GetRequiredService<IResponseFormatter>();
+    var formatter = context.RequestServices.GetServices<IResponseFormatter>().First(f => f.RichOutput);
 
-    await formatter.Format(context, "Endpoint Function: It is sunny in LA");
+    await formatter.Format(context, "Multiple Services");
 });
 
-app.MapFallback(async context =>
-{
-    await context.Response.WriteAsync("Routed to fallback endpoint");
-});
+//BuildDIUntil385Page(app);
 
 app.Run();
+
+static void BuildDIUntil385Page(WebApplication app)
+{
+    app.MapGet("/", () => "Hello World!");
+
+    app.UseMiddleware<WeatherMiddleware>();
+    app.MapEndpoint<WeatherEndpoint>("endpoint/class");
+
+    app.MapGet("middleware/function", async (HttpContext context, IResponseFormatter formatter) =>
+    {
+        await formatter.Format(context, "Middleware Function: It is snowing in Chicago");
+    });
+
+    //app.MapGet("endpoint/class", WeatherEndpoint.Endpoint);
+    //app.MapWeather("endpoint/class");
+
+    app.MapGet("endpoint/function", async (HttpContext context) =>
+    {
+        IResponseFormatter formatter = context.RequestServices.GetRequiredService<IResponseFormatter>();
+
+        await formatter.Format(context, "Endpoint Function: It is sunny in LA");
+    });
+
+    app.MapFallback(async context =>
+    {
+        await context.Response.WriteAsync("Routed to fallback endpoint");
+    });
+}
