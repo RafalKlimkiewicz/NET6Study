@@ -1,48 +1,21 @@
+using System.Collections;
 using Platform.Classes;
 using Platform.Middlewares;
 using Platform.Services;
-using Platform.Services.ChainDependency;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var env = builder.Environment;
-var config = builder.Configuration;
+//MultipleDIServicesImplementation(builder);
 
-if (env.IsDevelopment())
-{
-    builder.Services.AddScoped<IResponseFormatter, TextResponseFormatter>();
-    builder.Services.AddScoped<IResponseFormatter, HtmlResponseFormatter>();
-    builder.Services.AddScoped<IResponseFormatter, GuidService>();
-    //builder.Services.AddScoped<IResponseFormatter, TimeResponseFormatter>();
-    //builder.Services.AddScoped<ITimeStamper, DefaultTimeStamper>();
 
-    //builder.Services.AddScoped(serviceProvider =>
-    //{
-    //    string? typeName = config["services:IResponseFormatter"];
-
-    //    return (IResponseFormatter)ActivatorUtilities.CreateInstance(serviceProvider, typeName == null ? typeof(GuidService) : Type.GetType(typeName, true)!);
-    //});
-}
-else
-{
-    builder.Services.AddScoped<IResponseFormatter, HtmlResponseFormatter>();
-}
+UsingUnboundTypesInServices(builder);
 
 var app = builder.Build();
 
-app.MapGet("single", async context =>
-{
-    var formatter = context.RequestServices.GetRequiredService<IResponseFormatter>();
+UsingUnboundTypesInServices(app);
 
-    await formatter.Format(context, "Single Service");
-});
 
-app.MapGet("/", async context =>
-{
-    var formatter = context.RequestServices.GetServices<IResponseFormatter>().First(f => f.RichOutput);
-
-    await formatter.Format(context, "Multiple Services");
-});
+//MultipleDIServicesImplementation2(app);
 
 //BuildDIUntil385Page(app);
 
@@ -74,4 +47,60 @@ static void BuildDIUntil385Page(WebApplication app)
     {
         await context.Response.WriteAsync("Routed to fallback endpoint");
     });
+}
+
+static void MultipleDIServicesImplementation(WebApplicationBuilder builder)
+{
+    builder.Services.AddScoped<IResponseFormatter, TextResponseFormatter>();
+    builder.Services.AddScoped<IResponseFormatter, HtmlResponseFormatter>();
+    builder.Services.AddScoped<IResponseFormatter, GuidService>();
+}
+
+static void MultipleDIServicesImplementation2(WebApplication app)
+{
+    app.MapGet("single", async context =>
+    {
+        var formatter = context.RequestServices.GetRequiredService<IResponseFormatter>();
+
+        await formatter.Format(context, "Single Service");
+    });
+
+    app.MapGet("/", async context =>
+    {
+        var formatter = context.RequestServices.GetServices<IResponseFormatter>().First(f => f.RichOutput);
+
+        await formatter.Format(context, "Multiple Services");
+    });
+}
+
+static void UsingUnboundTypesInServices(WebApplication app)
+{
+    app.MapGet("string", async context =>
+    {
+        var collection = context.RequestServices.GetRequiredService<ICollection<string>>();
+
+        collection.Add($"Request: {DateTime.Now.ToLongTimeString()}");
+
+        foreach (var str in collection)
+        {
+            await context.Response.WriteAsync($"string: {str}\n");
+        }
+    });
+
+    app.MapGet("int", async context =>
+    {
+        var collection = context.RequestServices.GetRequiredService<ICollection<int>>();
+
+        collection.Add(collection.Count + 1);
+
+        foreach (var val in collection)
+        {
+            await context.Response.WriteAsync($"Int: {val}\n");
+        }
+    });
+}
+
+static void UsingUnboundTypesInServices(WebApplicationBuilder builder)
+{
+    builder.Services.AddSingleton(typeof(ICollection<>), typeof(List<>));
 }
