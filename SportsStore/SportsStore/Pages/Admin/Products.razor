@@ -1,5 +1,8 @@
 ﻿@page "/admin/products"
 @page "/admin/"
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.EntityFrameworkCore
+@using SportsStore.Models
 
 @inherits OwningComponentBase<IStoreRepository>
 
@@ -33,7 +36,7 @@
                             Edit
                         </NavLink>
                         <button class="btn btn-danger btn-sm"
-                                @onclick="@(e => DeleteProduct(p))">
+                                @onclick="@(DeleteProduct(p))">
                             Delete
                         </button>
                     </td>
