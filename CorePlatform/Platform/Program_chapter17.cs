@@ -23,6 +23,7 @@ builder.Services.AddSingleton<IResponseFormatter, HtmlResponseFormatter>();
 builder.Services.AddDbContext<CalculationContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration["ConnectionStrings:CalcConnection"]);
+    opts.EnableSensitiveDataLogging(true);
 });
 
 builder.Services.AddTransient<SeedData>();
@@ -42,8 +43,11 @@ bool cmLineInit = (app.Configuration["INITDB"] ?? "false") == "true";
 
 if(app.Environment.IsDevelopment() || cmLineInit)
 {
-    var seedData = app.Services.GetRequiredService<SeedData>();
-    seedData.SeedDatabase();
+    using (var scope = app.Services.CreateScope())
+    {
+        var seedData = scope.ServiceProvider.GetRequiredService<SeedData>();
+        seedData.SeedDatabase();
+    }
 }
 
 if (!cmLineInit)
