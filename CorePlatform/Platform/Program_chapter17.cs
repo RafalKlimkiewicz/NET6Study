@@ -15,7 +15,13 @@ builder.Services.AddDistributedSqlServerCache(opts =>
     opts.TableName = "DataCache";
 });
 
+builder.Services.AddResponseCaching();
+builder.Services.AddSingleton<IResponseFormatter, HtmlResponseFormatter>();
+
+
 var app = builder.Build();
+
+app.UseResponseCaching();
 
 app.MapEndpoint<SumEndpoint>("/sum/{count:int=1000000000}");
 
