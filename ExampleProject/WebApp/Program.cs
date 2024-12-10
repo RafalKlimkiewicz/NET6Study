@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WebApp.Middlewares;
 using WebApp.Models.DB;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ builder.Services.AddDbContext<DataContext>(opts =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<TestMiddleware>();
 
 app.MapGet("/", () => "Hello World!");
 
