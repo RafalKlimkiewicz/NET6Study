@@ -17,28 +17,15 @@ namespace WebApp.Controllers
         [HttpGet]
         public IEnumerable<Product> GetProducts()
         {
-            return new[]
-            {
-                new Product
-                {
-                    Name = "Product #1",
-                },
-                new Product
-                {
-                    Name = "Product #2",
-                }
-
-            };
+            return _context.Products;
         }
 
         [HttpGet("{id}")]
-        public Product GetProduct(long id)
+        public Product? GetProduct(long id, [FromServices] ILogger<ProductsController> logger)
         {
-            return new Product()
-            {
-                ProductId = id,
-                Name = "Test Product",
-            };
+            logger.LogDebug("GerProduct Action Invoked");
+
+            return _context.Products.Find(id);
         }
     }
 }
