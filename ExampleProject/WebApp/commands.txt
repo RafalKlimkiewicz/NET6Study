@@ -1,0 +1,5 @@
+﻿Invoke - WebRequest http://localhost:5000/api/products/1 | Select-Object Content
+
+Invoke - WebRequest http://localhost:5000/api/products -Method POST -Body (@{Name="boot laces"} | ConvertTo-Json) -ContentType "application/json"
+
+Invoke - RestMethod http://localhost:5000/api/products -Method POST -Body (@{Name="swimming Goggles"; Price=12.75; CategoryId=1; SupplierId=1} | ConvertTo-Json) -ContentType "application/json"

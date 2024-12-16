@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using WebApp.Middlewares;
-using WebApp.Models;
 using WebApp.Models.DB;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,13 +12,22 @@ builder.Services.AddDbContext<DataContext>(opts =>
     opts.EnableSensitiveDataLogging(true);
 });
 
-builder.Services.AddControllers();
+//builder.Services.AddControllers();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(opts =>
+    {
+        opts.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
+
+//builder.Services.Configure<JsonOptions>(opts =>
+//{
+//    opts.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+//});
 
 var app = builder.Build();
 
 app.MapControllers();
-
-const string BASEURL = "api/products";
 
 app.UseMiddleware<TestMiddleware>();
 

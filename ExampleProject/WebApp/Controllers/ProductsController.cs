@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Models.DB;
+using WebApp.Models.Dto;
 
 namespace WebApp.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
@@ -15,41 +17,79 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Product> GetProducts()
+        public IAsyncEnumerable<Product> GetProducts()
         {
-            return _context.Products;
+            return _context.Products.AsAsyncEnumerable();
         }
 
         [HttpGet("{id}")]
-        public Product? GetProduct(long id, [FromServices] ILogger<ProductsController> logger)
+        public async Task<IActionResult?> GetProduct(long id, [FromServices] ILogger<ProductsController> logger)
         {
             logger.LogDebug("GerProduct Action Invoked");
 
-            return _context.Products.Find(id);
+            var p = await _context.Products.FindAsync(id);
+
+            //supplier null / category null before
+            return p == null ? NotFound() : Ok(new
+            {
+                ProductId = p.ProductId,
+                Name = p.Name,
+                Price = p.Price,
+                CategoryId = p.CategoryId,
+                SupplierId = p.SupplierId
+            });
         }
 
         [HttpPost]
-        public void SaveProduct([FromBody] Product product)
+        public async Task<IActionResult> SaveProduct([FromBody] ProductBindingTarget target)
         {
-            _context.Products.Add(product);
+            //if (ModelState.IsValid)
+            {
+                var p = target.ToProduct();
 
-            _context.SaveChanges();
+                await _context.Products.AddAsync(p);
+
+                await _context.SaveChangesAsync();
+
+                return Ok(p);
+            }
+
+            return BadRequest(ModelState);
         }
 
         [HttpPut]
-        public void UpdateProduct([FromBody] Product product)
+        public async Task UpdateProduct(Product product)
         {
             _context.Products.Update(product);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         [HttpDelete("id")]
-        public void DeleteProduct([FromBody] long id)
+        public async Task DeleteProduct([FromBody] long id)
         {
             _context.Products.Remove(new Product { ProductId = id });
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
+
+        [HttpGet("redirect")]
+        public IActionResult Redirect()
+        {
+            return Redirect("/api/products/1");
+        }
+
+        [HttpGet("redirectToProductAction")]
+        public IActionResult RedirectToProductAction()
+        {
+            return RedirectToAction(nameof(GetProduct), new { Id = 1 });
+        }
+
+        [HttpGet("redirectToActionPermanent")]
+        public IActionResult RedirectToActionPermanent()
+        {
+            return RedirectToActionPermanent(nameof(GetProduct), new { Id = 2 });
+        }
+
     }
 }
