@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Middlewares;
 using WebApp.Models.DB;
-using System.Text.Json.Serialization;
+//using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +14,18 @@ builder.Services.AddDbContext<DataContext>(opts =>
 
 //builder.Services.AddControllers();
 
-builder.Services.AddControllers()
-    .AddJsonOptions(opts =>
-    {
-        opts.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-    });
+builder.Services.AddControllers().AddNewtonsoftJson();
+
+builder.Services.Configure<MvcNewtonsoftJsonOptions>(opts =>
+{
+    opts.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+});
+
+//builder.Services.AddControllers()
+//    .AddJsonOptions(opts =>
+//    {
+//        opts.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+//    });
 
 //builder.Services.Configure<JsonOptions>(opts =>
 //{
