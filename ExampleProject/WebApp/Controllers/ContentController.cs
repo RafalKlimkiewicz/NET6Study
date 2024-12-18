@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApp.Models;
+using Microsoft.EntityFrameworkCore;
 using WebApp.Models.DB;
+using WebApp.Models.Dto;
 
 namespace WebApp.Controllers
 {
@@ -18,10 +19,34 @@ namespace WebApp.Controllers
         [HttpGet("string")]
         public string GetString() => "This is a string response";
 
-        [HttpGet("object")]
-        public async Task<Product?> GetObject()
+        [HttpGet("object/{format?}")]
+        [FormatFilter]
+        [Produces("application/json","application/xml")]
+        public async Task<ProductBindingTarget?> GetObject()
         {
-            return await _dataContext.Products.FindAsync();
+            var p = await _dataContext.Products.FirstAsync();
+
+            return new ProductBindingTarget()
+            {
+                Name = p.Name,
+                Price = p.Price,
+                CategoryId = p.CategoryId,
+                SupplierId = p.SupplierId,
+            };
+        }
+
+        [HttpPost]
+        [Consumes("application/json")]
+        public string SaveProductJson(ProductBindingTarget product)
+        {
+            return $"JSON: {product.Name}";
+        }
+        
+        [HttpPost]
+        [Consumes("application/xml")]
+        public string SaveProductXml(ProductBindingTarget product)
+        {
+            return $"XML: {product.Name}";
         }
     }
 }

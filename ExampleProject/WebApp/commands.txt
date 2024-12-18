@@ -1,5 +1,32 @@
-﻿Invoke - WebRequest http://localhost:5000/api/products/1 | Select-Object Content
+﻿Invoke-WebRequest http://localhost:5000/api/products/1 | Select-Object Content
 
-Invoke - WebRequest http://localhost:5000/api/products -Method POST -Body (@{Name="boot laces"} | ConvertTo-Json) -ContentType "application/json"
+Invoke-WebRequest http://localhost:5000/api/products -Method POST -Body (@{Name="boot laces"} | ConvertTo-Json) -ContentType "application/json"
 
-Invoke - RestMethod http://localhost:5000/api/products -Method POST -Body (@{Name="swimming Goggles"; Price=12.75; CategoryId=1; SupplierId=1} | ConvertTo-Json) -ContentType "application/json"
+Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{Name="swimming Goggles"; Price=12.75; CategoryId=1; SupplierId=1} | ConvertTo-Json) -ContentType "application/json"
+
+Invoke-WebRequest http://localhost:5000/api/content/object -Headers @{Accept="application/xml"} | select @{n='Content-Type'; e={$_.Headers."Content-Type"}}, Content 
+
+Invoke-WebRequest http://localhost:5000/api/content/object -Headers @{Accept="application/xml,*/*;q=0.8"} | select @{n='Content-Type'; e={$_.Headers."Content-Type"}}, Content
+
+Invoke-WebRequest http://localhost:5000/api/content/object -Headers @{Accept="application/xml,application/json;q=0.8"} | select @{n='Content-Type'; e={$_.Headers."Content-Type"}}, Content
+
+Invoke-WebRequest http://localhost:5000/api/content/object -Headers @{Accept="img/png"} | select @{n='Content-Type'; e={$_.Headers."Content-Type"}}, Content
+
+Invoke-RestMethod http://localhost:5000/api/content -Method POST -Body (@{Name="swimming Goggles"; Price=12.75; CategoryId=1; SupplierId=1} | ConvertTo-Json) -ContentType "application/json"
+
+
+plik.ps1:
+
+$xmlBody = @"
+<ProductBindingTarget>
+  <CategoryId>1</CategoryId>
+  <Name>Kayak</Name>
+  <Price>12</Price>
+  <SupplierId>1</SupplierId>
+</ProductBindingTarget>
+"@
+
+Invoke-RestMethod http://localhost:5000/api/content `
+    -Method POST `
+    -Body $xmlBody `
+    -ContentType "application/xml"
