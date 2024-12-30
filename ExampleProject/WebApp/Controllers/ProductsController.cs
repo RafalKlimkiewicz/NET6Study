@@ -2,6 +2,7 @@
 using WebApp.Models;
 using WebApp.Models.DB;
 using WebApp.Models.Dto;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Controllers
 {
@@ -23,6 +24,8 @@ namespace WebApp.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult?> GetProduct(long id, [FromServices] ILogger<ProductsController> logger)
         {
             logger.LogDebug("GerProduct Action Invoked");
@@ -41,6 +44,9 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> SaveProduct([FromBody] ProductBindingTarget target)
         {
             //if (ModelState.IsValid)
