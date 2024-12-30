@@ -36,17 +36,16 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        [Consumes("application/json")]
         public string SaveProductJson(ProductBindingTarget product)
         {
             return $"JSON: {product.Name}";
         }
         
-        [HttpPost]
-        [Consumes("application/xml")]
-        public string SaveProductXml(ProductBindingTarget product)
-        {
-            return $"XML: {product.Name}";
-        }
+        //[HttpPost]
+        //[Consumes("application/xml")]
+        //public string SaveProductXml(ProductBindingTarget product)
+        //{
+        //    return $"XML: {product.Name}";
+        //}
     }
 }

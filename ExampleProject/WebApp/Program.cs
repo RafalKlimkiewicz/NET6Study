@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using WebApp.Middlewares;
 using WebApp.Models.DB;
 //using System.Text.Json.Serialization;
@@ -25,7 +26,19 @@ builder.Services.Configure<MvcOptions>(opts =>
     opts.ReturnHttpNotAcceptable = true;
 });
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApp", Version = "v1" });
+});
+
 var app = builder.Build();
+
+app.UseSwagger();
+
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApp");
+});
 
 app.MapControllers();
 
