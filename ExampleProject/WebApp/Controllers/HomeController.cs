@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 using WebApp.Models.DB;
 
@@ -15,17 +16,9 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> Index(long id = 1)
         {
-            Product? product = await _dataContext.Products.FindAsync(id);
-            
-            if(product?.CategoryId == 1)
-                return View("Watersports", product);
-            else
-                return View(product);
-        }
+            ViewBag.AveragePrice = await _dataContext.Products.AverageAsync(x => x.Price);
 
-        public IActionResult Common()
-        {
-            return View();
+            return View(await _dataContext.Products.FindAsync(id));
         }
 
         public IActionResult List()
