@@ -5,7 +5,38 @@
     <link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
-    <h6 class="bg-primary text-white text-center m-2 p-2">@(ViewBag.Title ?? "Layout")</h6>
-    @RenderBody()
+    <div class="bg-info text-white m-2 p-1">
+        This is parto of the layout
+    </div>
+
+    <div class="bg-primary text-white text-center m-2 p-2">
+            @RenderSection("Header")
+    </div>
+
+    <div class="bg-info text-white m-2 p-1">
+        This is parto of the layout
+    </div>
+
+    <div class="m-2">
+        <table class="table table-sm table-striped table-bordered">
+            <tbody>
+                    @RenderBody()
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="bg-info text-white m-2 p-1">
+        This is parto of the layout
+    </div>
+
+    <div class="bg-primary text-white text-center  m-2 p-2">
+            @RenderSection("Footer")
+    </div>
+
+    <div class="bg-info text-white m-2 p-1">
+        This is parto of the layout
+    </div>
+
 </body>
 </html>
