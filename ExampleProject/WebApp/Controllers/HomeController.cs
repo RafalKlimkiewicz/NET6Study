@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApp.Models;
 using WebApp.Models.DB;
 
 namespace WebApp.Controllers
