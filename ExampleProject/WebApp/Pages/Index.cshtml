@@ -1,12 +1,6 @@
 ﻿@page "{id:long?}"
 @model IndexModel
 
-<!DCTYPE html>
-<html>
-<head>
-    <link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-</head>
-<body>
-    <div class="bg-primary text-white text-center m-2 p-2">@Model.Product?.Name</div>
-</body>
-</html>
+<div class="bg-primary text-white text-center m-2 p-2">@Model.Product?.Name</div>
+
+<partial name="_ProductPartial" model="Model.Product" />

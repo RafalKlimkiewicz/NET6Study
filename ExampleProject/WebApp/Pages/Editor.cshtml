@@ -1,5 +1,8 @@
 ﻿@page "{id:long}"
 @model EditorModel
+@{
+    Layout = null;
+}
 
 <!DCTYPE html>
 <html>
@@ -16,7 +19,7 @@
             </tbody>
         </table>
         <form method="post">
-            @Html.AntiForgeryToken()
+                @Html.AntiForgeryToken()
             <div class="form-group">
                 <label>Price</label>
                 <input name="price" class="form-control" value="@Model.Product?.Price" />
