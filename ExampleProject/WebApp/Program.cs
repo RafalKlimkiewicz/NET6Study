@@ -21,7 +21,7 @@ builder.Services.AddSession(opts =>
 
 builder.Services.Configure<RazorPagesOptions>(opts => opts.Conventions.AddPageRoute("/Index","/extra/page/{id:long?}"));
 
-builder.Services.AddSingleton<CitiesData>();
+builder.Services.AddSingleton<CitiesDataContext>();
 
 var app = builder.Build();
 

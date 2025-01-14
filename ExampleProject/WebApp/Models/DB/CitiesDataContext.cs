@@ -1,6 +1,6 @@
 ﻿namespace WebApp.Models.DB
 {
-    public class CitiesData
+    public class CitiesDataContext
     {
         private List<City> _cities = new()
         {

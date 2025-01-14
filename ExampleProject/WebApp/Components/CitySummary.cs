@@ -8,9 +8,9 @@ namespace WebApp.Components
 {
     public class CitySummary : ViewComponent
     {
-        private CitiesData _citiesData;
+        private CitiesDataContext _citiesData;
 
-        public CitySummary(CitiesData cdata)
+        public CitySummary(CitiesDataContext cdata)
         {
             _citiesData = cdata;
         }

@@ -1,10 +1,12 @@
-﻿@page
-@model CitiesModel
+﻿@model IEnumerable<City>
+@{
+    Layout = "_ImportantLayout";
+}
 
 <div class="m-2">
     <table class="table table-sm table-striped table-bordered">
         <tbody>
-            @foreach (var city in Model.Data?.Cities ?? Enumerable.Empty<City>())
+            @foreach (var city in Model ?? Enumerable.Empty<City>())
             {
                 <tr>
                     <td>@city.Name</td>
