@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace WebApp.TagHelpers
 {
@@ -16,7 +17,18 @@ namespace WebApp.TagHelpers
 
             var content = (await output.GetChildContentAsync()).GetContent();
 
-            output.Content.SetHtmlContent($"<tr><th colspan=\"2\">{content}</th></tr>");
+            //output.Content.SetHtmlContent($"<tr><th colspan=\"2\">{content}</th></tr>");
+            // ->:
+
+            var header = new TagBuilder("th");
+            header.Attributes["colspan"] = "2";
+            header.InnerHtml.Append(content);
+
+            var row = new TagBuilder("tr");
+            row.InnerHtml.AppendHtml(header);
+
+            output.Content.SetHtmlContent(row);
+
         }
     }
 }
