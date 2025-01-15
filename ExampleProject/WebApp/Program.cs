@@ -13,20 +13,20 @@ builder.Services.AddDbContext<DataContext>(opts =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(opts =>
-{
-    opts.Cookie.IsEssential = true;
-});
+//builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddSession(opts =>
+//{
+//    opts.Cookie.IsEssential = true;
+//});
 
-builder.Services.Configure<RazorPagesOptions>(opts => opts.Conventions.AddPageRoute("/Index","/extra/page/{id:long?}"));
+//builder.Services.Configure<RazorPagesOptions>(opts => opts.Conventions.AddPageRoute("/Index","/extra/page/{id:long?}"));
 
 builder.Services.AddSingleton<CitiesDataContext>();
 
 var app = builder.Build();
 
 app.UseStaticFiles();
-app.UseSession();
+//app.UseSession();
 app.MapControllers();
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
