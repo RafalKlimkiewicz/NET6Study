@@ -16,13 +16,28 @@ namespace WebApp.TagHelpers
             output.Attributes.SetAttribute("class", "bg-primary m-2 p-2");
 
             var list = new TagBuilder("ul");
+
+            list.Attributes["class"] = "list-group";
             
-            list.Attributes["class"] = "list-group-item";
-
             var rd = Context.RouteData.Values;
+             
+            if (rd.Count > 0)
+            {
+                foreach (var kvp in rd)
+                {
+                    var item = new TagBuilder("li");
 
-
-
+                    item.Attributes["class"] = "list-group-item";
+                    item.InnerHtml.Append($"{kvp.Key}: {kvp.Value}");
+                    list.InnerHtml.AppendHtml(item);
+                }
+                
+                output.Content.AppendHtml(list);
+            }
+            else
+            {
+                output.Content.Append("No route data");
+            }
         }
     }
 }
