@@ -1,12 +1,45 @@
-﻿<!DCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang ="en">
 <head>
-    <title>@ViewBag.Title</title>
-    <link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <title>@ViewBag.Title - SimplaLayout</title>
+
+    @* <link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" /> *@
+    @* <link asp-href-include="/lib/bootstrap/css/*.min.css" asp-href-exclude="**/*-reboot*,**/*-grid*,**/*-utilities*, **/*.rtl.*" rel="stylesheet" /> *@
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrapF.min.css"
+          asp-fallback-href="/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="btn"
+          asp-fallback-test-property="display"
+          asp-fallback-test-value="inline-block"
+          rel="stylesheet" />
+
+    @* <script asp-src-include="lib/jquery/**/*.js"></script> *@
+    @* <script asp-src-include="lib/jquery**/*.min.js"></script> *@
+    @* <script asp-src-include="lib/jquery**/*slim.min.js" asp-src-exclude="**.slim.**" asp-append-version="true" /> *@
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jqueryF.min.js"
+            asp-fallback-src="/lib/jquery/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            asp-append-version="true"></script>
 </head>
 <body>
     <div class="m-2">
-            @RenderBody()
+        <environment names="development">
+            <h2 class="bg-info text-white m-2 p-2">This is development</h2>
+        </environment>
+        <environment names="production">
+            <h2 class="bg-danger text-white m-2 p-2">This is production</h2>
+        </environment>
+        <img src="/images/city.jpg" asp-append-version="true" class="m-2" />
+        <h6 class="bg-primary text-white m-2 p-2">
+            Uncached timestamp: @DateTime.Now.ToLongTimeString()
+        </h6>
+        <cache expires-after="@TimeSpan.FromSeconds(15)" expires-on="@DateTime.Parse("2100-01-01")" expires-sliding="@TimeSpan.FromSeconds(10)" vary-by-route="action">
+            <h6 class="bg-primary text-white m-2 p-2">
+                Cached timestamp: @DateTime.Now.ToLongTimeString()
+            </h6>
+        </cache>
+        @RenderBody()
     </div>
 </body>
 </html>
