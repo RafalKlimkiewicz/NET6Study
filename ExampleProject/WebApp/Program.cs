@@ -30,8 +30,9 @@ var app = builder.Build();
 
 app.UseStaticFiles();
 //app.UseSession();
-app.MapControllers();
-app.MapDefaultControllerRoute();
+//app.MapControllers();
+//app.MapDefaultControllerRoute();
+app.MapControllerRoute("forms", "controllers/{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 //to default vs MVC framework Views
 //app.MapRazorPages().Add(b => ((RouteEndpointBuilder)b).Order = 2);
