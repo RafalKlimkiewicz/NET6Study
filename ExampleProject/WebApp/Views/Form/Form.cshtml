@@ -5,21 +5,51 @@
 
 <h5 class="bg-primary text-white text-center p-2">HTML Form</h5>
 
-@* <form action="/controllers/form/submitform" method="post"> *@
 <form asp-action="submitform" method="post" id="htmlform">
     <div class="form-group">
-        <label>Id</label>
+        <label asp-for="ProductId"></label>
         <input class="form-control" asp-for="ProductId" />
     </div>
     <div class="form-group">
-        <label>Name</label>
-        @* <input class="form-control" name="Name" value="@Model?.Name" /> *@
+        <label asp-for="Name"></label>
         <input class="form-control" asp-for="Name" />
     </div>
     <div class="form-group">
-        <label>Price</label>
-        @* <input class="form-control" asp-for="Price" asp-format="{0:#,###.00}" /> due to added co Product: [DisplayFormat(DataFormatString = "{0:c2}", ApplyFormatInEditMode = true)] *@
+        <label asp-for="Price"></label>
         <input class="form-control" asp-for="Price" asp-format="{0:#,###.00}" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Category"></label>
+
+        @{
+#pragma warning disable CS8602
+        }
+        <select class="form-control" asp-for="CategoryId">
+            <option value="1">Waterspoert</option>
+            <option value="2">Soccer</option>
+            <option value="3">Chess</option>
+        </select>
+        <br />
+        <select class="form-control" asp-for="CategoryId" asp-items="@ViewBag.Categories"> </select>
+
+        @{
+#pragma warning restore CS8602
+        }
+    </div>
+    <div class="form-group">
+        <label asp-for="Supplier"></label>
+
+        @{
+#pragma warning disable CS8602
+        }
+
+        <textarea class="form-control" asp-for="Supplier.Name"></textarea>
+
+        @{
+#pragma warning restore CS8602
+        }
+
+
     </div>
     <button type="submit" class="btn btn-primary mt-2">Sumbit</button>
 </form>

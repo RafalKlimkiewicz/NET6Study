@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 using WebApp.Models.DB;
 
 namespace WebApp.Pages
 {
-    [IgnoreAntiforgeryToken]
     public class FormHandlerModel : PageModel
     {
         private DataContext _dataContext;
@@ -19,7 +19,8 @@ namespace WebApp.Pages
 
         public async Task OnGetAsync(long id = 1)
         {
-            Product = await _dataContext.Products.FindAsync(id);
+            Product = await _dataContext.Products.Include(p => p.Category)
+                .Include(p => p.Supplier).FirstAsync(p => p.ProductId == id);
         }
 
         public IActionResult OnPost()
