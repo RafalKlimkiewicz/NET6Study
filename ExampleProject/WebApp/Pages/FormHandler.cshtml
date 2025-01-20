@@ -6,48 +6,12 @@
     <form asp-page="FormHandler" method="post" id="htmlform">
         <div class="form-group">
             <label>Name</label>
-            @{
-#pragma warning disable CS8602
-            }
-            <input class="form-control" asp-for="Product.Name" />
-            @{
-#pragma warning restore CS8602
-            }
+            <input class="form-control" asp-for="Product.Name" name="name"/>
         </div>
         <div class="form-group">
             <label>Price</label>
-            @{
-#pragma warning disable CS8602
-            }
-            <input class="form-control" asp-for="Product.Price" />
-            @{
-#pragma warning restore CS8602
-            }
-        </div>
-        <div class="form-group">
-            <label>Category</label>
-            @{
-#pragma warning disable CS8602
-            }
-            <input class="form-control" asp-for="Product.Category.Name" />
-            @{
-#pragma warning restore CS8602
-            }
-        </div>
-        <div class="form-group">
-            <label>Name</label>
-            @{
-#pragma warning disable CS8602
-            }
-            <input class="form-control" asp-for="Product.Supplier.Name" />
-            @{
-#pragma warning restore CS8602
-            }
+            <input class="form-control" asp-for="Product.Price" name="price"/>
         </div>
         <button type="submit" class="btn btn-primary mt-2">Submit</button>
     </form>
-
-    <button form="htmlform" asp-action="FormHandler" class="btn btn-primary mt-2">
-        Sumbit (Outsite Form)
-    </button>
 </div>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using WebApp.Models.DB;
 
 namespace WebApp.Controllers
@@ -15,19 +16,20 @@ namespace WebApp.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(long id = 1)
+        public async Task<IActionResult> Index(long? id)
         {
             ViewBag.Categories = new SelectList(_context.Categories, "CategoryId", "Name");
-
-            return View("Form", await _context.Products.Include(p => p.Category)
-                .Include(p => p.Supplier).FirstAsync(p => p.ProductId == id));
+            var p = await _context.Products.Include(p => p.Category)
+                .Include(p => p.Supplier).FirstOrDefaultAsync(p => id == null || p.ProductId == id);
+            
+            return View("Form", p);
         }
 
         [HttpPost]
-        public IActionResult SubmitForm()
+        public IActionResult SubmitForm(string name, decimal price)
         {
-            foreach (var key in Request.Form.Keys)
-                TempData[key] = string.Join(", ", Request.Form[key]);
+            TempData["name param controler"] = name;
+            TempData["price param controler"] = price.ToString();
 
             return RedirectToAction(nameof(Results));
         }
