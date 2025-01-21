@@ -17,7 +17,7 @@ namespace WebApp.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(long? id)
+        public async Task<IActionResult> Index([FromQuery]long? id)
         {
             ViewBag.Categories = new SelectList(_context.Categories, "CategoryId", "Name");
             var p = await _context.Products.Include(p => p.Category)
@@ -56,6 +56,11 @@ namespace WebApp.Controllers
         public IActionResult Results()
         {
             return View();
+        }
+
+        public string Header([FromHeader(Name = "Accept-Language")] string accept)
+        {
+            return $"Header: {accept}";
         }
     }
 }
