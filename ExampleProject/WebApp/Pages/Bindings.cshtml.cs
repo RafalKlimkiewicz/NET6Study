@@ -5,8 +5,9 @@ namespace WebApp.Pages
 {
     public class BindingsModel : PageModel
     {
-        [BindProperty]
-        public string[] Data { get; set; } = Array.Empty<string>();
+        [BindProperty(Name = "Data")]
+        public Dictionary<string, string> Data { get; set; } = new Dictionary<string, string>();
+        //public SortedSet<string> Data { get; set; } = new SortedSet<string>();
 
         public void OnGet()
         {
