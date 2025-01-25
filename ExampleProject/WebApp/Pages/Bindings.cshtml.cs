@@ -6,10 +6,13 @@ namespace WebApp.Pages
 {
     public class BindingsModel : PageModel
     {
-        //[BindProperty(Name = "Data")]
-        [FromQuery(Name = "Data")]
-        public Product[] Data { get; set; } = Array.Empty<Product>();
-        //public SortedSet<string> Data { get; set; } = new SortedSet<string>();
+        public Product Data { get; set; } = new Product { Name = "Skis", Price = 500 };
+
+        public async Task OnPostAsync([FromForm] bool bind)
+        {
+            if (bind)
+                await TryUpdateModelAsync(Data, "data", p => p.Name, p => p.Price);
+        }
 
         public void OnGet()
         {
