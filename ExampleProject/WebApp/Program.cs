@@ -1,5 +1,6 @@
 //using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Models.DB;
 //using WebApp.TagHelpers;
@@ -28,6 +29,9 @@ builder.Services.Configure<AntiforgeryOptions>(opts =>
 {
     opts.HeaderName = "X-XSRF-TOKEN";
 });
+
+builder.Services.Configure<MvcOptions>(opts => opts.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value => "Please enter a value"));
+
 //builder.Services.AddTransient<ITagHelperComponent, TimeTagHelperComponent>();
 //builder.Services.AddTransient<ITagHelperComponent, TableFooterSTagHelperComponent>();
 
