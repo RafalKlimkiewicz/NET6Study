@@ -1,7 +1,9 @@
 //using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using WebApp.Models.DB;
 //using WebApp.TagHelpers;
 
@@ -30,6 +32,14 @@ builder.Services.Configure<AntiforgeryOptions>(opts =>
     opts.HeaderName = "X-XSRF-TOKEN";
 });
 
+var supportedCultures = new[] { new CultureInfo("en-US") };
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
+
 builder.Services.Configure<MvcOptions>(opts => opts.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value => "Please enter a value"));
 
 //builder.Services.AddTransient<ITagHelperComponent, TimeTagHelperComponent>();
@@ -54,6 +64,8 @@ app.Use(async (context, next) =>
 
     await next();
 });
+
+app.UseRequestLocalization();
 
 //app.UseSession();
 //app.MapControllers();
