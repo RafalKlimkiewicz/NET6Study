@@ -1,33 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebApp.Models.DB;
 
 namespace WebApp.Controllers
 {
+    //3
     public class HomeController : Controller
     {
-        private readonly DataContext _dataContext;
-
-        public HomeController(DataContext dataContext)
+        [RequireHttps]
+        public IActionResult Index()
         {
-            _dataContext = dataContext;
+            return View("Message", "This is the Index action on the Home controller");
         }
 
-        public async Task<IActionResult> Index(long id = 1)
+        public IActionResult Index2()
         {
-            ViewBag.AveragePrice = await _dataContext.Products.AverageAsync(x => x.Price);
-
-            return View(await _dataContext.Products.FindAsync(id));
+            //1.
+            if (Request.IsHttps)
+                return View("Message", "This is the Index action on the Home controller");
+            else
+                return new StatusCodeResult(StatusCodes.Status403Forbidden);
         }
 
-        public IActionResult List()
+        [RequireHttps] //2.
+        public IActionResult Secure()
         {
-            return View(_dataContext.Products);
+            if (Request.IsHttps)
+                return View("Message", "This is the Secure action on the Home controller");
+            else
+                return new StatusCodeResult(StatusCodes.Status403Forbidden);
         }
 
-        public IActionResult Html()
+        public IActionResult Secure2()
         {
-            return View((object)"This is a <h3><i>string</i></h3>");
+            return View("Message", "This is the Secure action on the Home controller");
         }
     }
 }
