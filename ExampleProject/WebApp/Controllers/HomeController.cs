@@ -7,10 +7,12 @@ namespace WebApp.Controllers
     //3. Attribute class
     //[RequireHttps]
     //4.Filter Attribute
-    [HttpsOnly] //wierd error / redirect
+    //    [HttpsOnly] //wierd error / redirect
+    [RequireHttps]
+    [ResultDiagnostics]
     public class HomeController : Controller
     {
-        [RequireHttps]
+
         public IActionResult Index()
         {
             return View("Message", "This is the Index action on the Home controller");
@@ -25,7 +27,7 @@ namespace WebApp.Controllers
                 return new StatusCodeResult(StatusCodes.Status403Forbidden);
         }
 
-        [RequireHttps] //2. attribute method
+        //[RequireHttps] //2. attribute method
         public IActionResult Secure()
         {
             return View("Message", "This is the Secure action on the Home controller");
@@ -51,6 +53,17 @@ namespace WebApp.Controllers
             {
                 context.ActionArguments["message1"] = "New message";
             }
+        }
+
+        [RangeException]
+        public ViewResult GenerateException(int? id)
+        {
+            if (id == null)
+                throw new ArgumentNullException(nameof(id));
+            else if (id > 10)
+                throw new ArgumentOutOfRangeException(nameof(id));
+            else
+                return View("Message", $"The value is{id}");
         }
     }
 }
