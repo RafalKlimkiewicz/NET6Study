@@ -7,9 +7,11 @@ namespace WebApp.Controllers
     //3. Attribute class
     //[RequireHttps]
     //4.Filter Attribute
-    //    [HttpsOnly] //wierd error / redirect
+    //[HttpsOnly] //wierd error / redirect
     [RequireHttps]
     [ResultDiagnostics]
+    [GuidResponse]
+    [GuidResponse]
     public class HomeController : Controller
     {
 
