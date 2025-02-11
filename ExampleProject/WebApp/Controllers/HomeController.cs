@@ -8,13 +8,16 @@ namespace WebApp.Controllers
     //[RequireHttps]
     //4.Filter Attribute
     //[HttpsOnly] //wierd error / redirect
-    [RequireHttps]
-    [ResultDiagnostics]
-    [GuidResponse]
-    [GuidResponse]
+    //[RequireHttps]
+    //[ResultDiagnostics]
+    //[ServiceFilter(typeof(GuidResponseAttribute))] // without IFilterFactory
+    //[GuidResponse]
+    //[GuidResponse]
+    [Message("This is the controller-scoped filter", Order = 10)]
     public class HomeController : Controller
     {
-
+        [Message("This is the first action-scoped filter", Order = 1)]
+        [Message("This is the second action-scoped filter", Order = -1)]
         public IActionResult Index()
         {
             return View("Message", "This is the Index action on the Home controller");

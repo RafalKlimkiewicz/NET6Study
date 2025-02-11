@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using WebApp.Filters;
 using WebApp.Models.DB;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,13 @@ builder.Services.AddDbContext<DataContext>(opts =>
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<GuidResponseAttribute>();
+//Globaly filters
+builder.Services.Configure<MvcOptions>(opts =>
+{
+    opts.Filters.Add<HttpsOnlyAttribute>();
+    opts.Filters.Add(new MessageAttribute("This is the globally-scoped filvvvvvvvvvvvvvter"));
+});
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
