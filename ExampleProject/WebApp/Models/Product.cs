@@ -7,10 +7,11 @@ using WebApp.Validation;
 
 namespace WebApp.Models
 {
-    [PhraseAndPrice(Phrase = "Small", PriceTarget = "100")]
+    //[PhraseAndPrice(Phrase = "Small", PriceTarget = "100")]
     public class Product
     {
         public long ProductId { get; set; }
+        
         [Required(ErrorMessage = "Please enter a value")]
         public string Name { get; set; } = string.Empty;
 
@@ -19,14 +20,19 @@ namespace WebApp.Models
         public decimal Price { get; set; }
 
         [PrimaryKey(ContextType = typeof(DataContext), DataType = typeof(Category))]
-        [Remote("CategoryKey", "Validation", ErrorMessage = "Enter an existing key")]
+        //[Remote("CategoryKey", "Validation", ErrorMessage = "Enter an existing key")]
         public long CategoryId { get; set; }
-        public Category? Category { get; set; }
-
+        
         [PrimaryKey(ContextType = typeof(DataContext), DataType = typeof(Supplier))]
-        [Remote("SupplierKey", "Validation", ErrorMessage = "Enter an existing key")]
+        //[Remote("SupplierKey", "Validation", ErrorMessage = "Enter an existing key")]
         public long SupplierId { get; set; }
+        
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Supplier? Supplier { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public Category? Category { get; set; }
+
     }
 }

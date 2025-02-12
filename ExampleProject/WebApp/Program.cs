@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
+//using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using WebApp.Filters;
@@ -17,11 +17,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<GuidResponseAttribute>();
 //Globaly filters
-builder.Services.Configure<MvcOptions>(opts =>
-{
-    opts.Filters.Add<HttpsOnlyAttribute>();
-    opts.Filters.Add(new MessageAttribute("This is the globally-scoped filvvvvvvvvvvvvvter"));
-});
+//builder.Services.Configure<MvcOptions>(opts =>
+//{
+//    opts.Filters.Add<HttpsOnlyAttribute>();
+//    opts.Filters.Add(new MessageAttribute("This is the globally-scoped filvvvvvvvvvvvvvter"));
+//});
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -35,6 +35,7 @@ var app = builder.Build();
 app.UseStaticFiles();
 app.UseRequestLocalization();
 app.MapDefaultControllerRoute();
+app.MapControllerRoute("forms", "controllers/{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
