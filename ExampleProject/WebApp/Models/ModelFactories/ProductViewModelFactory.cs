@@ -17,5 +17,27 @@ namespace WebApp.Models.ModelFactories
                 Suppliers = p == null || p.Supplier == null ? Enumerable.Empty<Supplier>() : new List<Supplier> { p.Supplier },
             };
         }
+
+        public static ProductViewModel Create(Product product, IEnumerable<Category> categories, IEnumerable<Supplier> suppliers)
+        {
+            return new ProductViewModel
+            {
+                Product = product,
+                Categories = categories,
+                Suppliers = suppliers,
+            };
+        }
+
+        public static ProductViewModel Edit(Product product, IEnumerable<Category> categories, IEnumerable<Supplier> suppliers)
+        {
+            return new ProductViewModel
+            {
+                Product = product,
+                Categories = categories,
+                Suppliers = suppliers,
+                Theme = "warninig",
+                Action = "Edit"
+            };
+        }
     }
 }
