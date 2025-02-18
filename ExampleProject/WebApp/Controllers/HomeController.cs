@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 using WebApp.Models.DB;
 using WebApp.Models.ModelFactories;
+using WebApp.Models.View;
 
 namespace WebApp.Controllers
 {
@@ -64,7 +65,7 @@ namespace WebApp.Controllers
 
             Product? product = await _dataContext.Products.FindAsync(id);
 
-            if(product != null)
+            if (product != null)
                 return View("ProductEditor", ProductViewModelFactory.Edit(product, Categories, Suppliers));
 
             return NotFound();
@@ -86,6 +87,30 @@ namespace WebApp.Controllers
             }
 
             return View("ProductEditor", ProductViewModelFactory.Edit(product, Categories, Suppliers));
+        }
+
+        public async Task<IActionResult> Delete(long id)
+        {
+            var p = await _dataContext.Products.FindAsync(id);
+
+            if (p != null)
+            {
+                var model = ProductViewModelFactory.Delete(p, Categories, Suppliers);
+
+                return View("ProductEditor", model);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Product product)
+        {
+            _dataContext.Products.Remove(product);
+
+            await _dataContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
