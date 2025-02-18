@@ -1,0 +1,30 @@
+﻿@page
+@model SupplierBreakOutModel
+
+<div class="m-2">
+    <h5 class="bg-secondary text-white text-center p-2">New Supplier</h5>
+    <form asp-page="SupplierBreakOut" method="post">
+        <div class="form-group">
+            @{
+#pragma warning disable CS8602
+            }
+
+            <label class="text-white" asp-for="Supplier.Name">
+                New Supplier Name
+            </label>
+            <input class="form-control" asp-for="Supplier.Name" />
+
+        </div>
+        <div class="form-group">
+            <label class="text-white" asp-for="Supplier.City"></label>
+            <input class="form-control" asp-for="Supplier.City" />
+
+            @{
+#pragma warning restore CS8602
+            }
+        </div>
+        <button class="btn btn-secondary mt-2" type="submit">Create</button>
+
+        <a class="btn btn-outline-secondary mt-2" asp-page="@Model.ReturnPage" asp-route-id="@Model.ProductId">Cancel</a>
+    </form>
+</div>
