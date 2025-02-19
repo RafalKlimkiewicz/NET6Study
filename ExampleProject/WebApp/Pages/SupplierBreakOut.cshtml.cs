@@ -29,7 +29,6 @@ namespace WebApp.Pages
             TempData["productId"] = ProductId = product.ProductId.ToString();
         }
 
-        [HttpPost]
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid && Supplier != null)

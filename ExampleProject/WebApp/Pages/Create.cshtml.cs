@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using WebApp.Models;
 using WebApp.Models.DB;
 using WebApp.Models.ModelFactories;
@@ -11,7 +12,9 @@ namespace WebApp.Pages
 
         public void OnGet()
         {
-            ViewModel = ProductViewModelFactory.Create(new Product(), Categories, Suppliers);
+            Product p = TempData.ContainsKey("product") ? JsonSerializer.Deserialize<Product>((TempData["product"] as string)!)! : new Product();
+
+            ViewModel = ProductViewModelFactory.Create(p, Categories, Suppliers);
         }
 
         public async Task<IActionResult> OnPostAsync([FromForm] Product product)
