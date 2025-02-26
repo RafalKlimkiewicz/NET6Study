@@ -1,12 +1,14 @@
 ﻿<!DOCTYPE html>
 <html>
-    <head>
+<head>
     <title>@ViewBag.Title</title>
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div class="m-2">
-            @RenderBody()
-        </div>
-    </body>
+    <base href="~/" />
+</head>
+<body>
+    <div class="m-2">
+        @RenderBody()
+    </div>
+    <script src="_framework/blazor.server.js"></script>
+</body>
 </html>

@@ -1,0 +1,52 @@
+﻿<table class="table table-sm table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Dept</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in People ?? Enumerable.Empty<Person>())
+        {
+            <tr style="@GetClass(p.Location?.City)">
+                <td>@p.PersonId</td>
+                <td>@p.Surname, @p.FirstName</td>
+                <td>@p.Department?.Name</td>
+                <td>@p.Location?.City, @p.Location?.State</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="form-group">
+    <label for="selectedCity">City</label>
+    <select name="selectedCity" class="form-control" @bind="SelectedCity">
+        <option disabled selected value="">Select City</option>
+        @foreach (var city in Cities ?? Enumerable.Empty<string>())
+        {
+            <option selected="@(city == SelectedCity)">
+                @city
+            </option>
+        }
+    </select>
+</div>
+<button class="btn btn-primary mt-2" type="submit">Select</button>
+
+@code {
+    [Inject]
+    public DataContext? Context { get; set; }
+
+    public IEnumerable<Person>? People => Context?.People.Include(p => p.Department).Include(p => p.Location);
+    public IEnumerable<string>? Cities => Context?.Locations.Select(l => l.City).Distinct();
+
+    public string SelectedCity { get; set; } = string.Empty;
+
+    public string GetClass(string? city) => SelectedCity == city ? "--bs-table-bg: transparent; --bs-table-bg-state: transparent; background-color: #17a2b8 !important; color: #fff !important; font-weight: bold;" : "";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+}
