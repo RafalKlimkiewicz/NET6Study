@@ -20,6 +20,14 @@
     </tbody>
 </table>
 
+<p>Component:</p>
+
+<SelectFilter Values="@Cities" Title="@SelectTitle" autofocus="true" name="city" requred="true" CustomEvent="@HandleCustom" />
+
+<br />
+<br />
+
+<span>Code:</span>
 <div class="form-group">
     <label for="selectedCity">City</label>
     <select name="selectedCity" class="form-control" @bind="SelectedCity">
@@ -38,15 +46,23 @@
     [Inject]
     public DataContext? Context { get; set; }
 
-    public IEnumerable<Person>? People => Context?.People.Include(p => p.Department).Include(p => p.Location);
+    public IEnumerable<Person>? People => Context?.People.Include(p => p.Department).Include(p => p.Location).Take(ItemCount);
+
     public IEnumerable<string>? Cities => Context?.Locations.Select(l => l.City).Distinct();
 
     public string SelectedCity { get; set; } = string.Empty;
 
     public string GetClass(string? city) => SelectedCity == city ? "--bs-table-bg: transparent; --bs-table-bg-state: transparent; background-color: #17a2b8 !important; color: #fff !important; font-weight: bold;" : "";
 
-    protected override void OnInitialized()
+    [Parameter]
+    public int ItemCount { get; set; } = 4;
+
+    [Parameter]
+    public string? SelectTitle { get; set; }
+
+    public void HandleCustom(string newValue)
     {
-        base.OnInitialized();
+        SelectedCity = newValue;
     }
+
 }

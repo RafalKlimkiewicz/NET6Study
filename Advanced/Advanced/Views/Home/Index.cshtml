@@ -1,17 +1,13 @@
 ﻿@model PeopleListViewModel
 
-<h4 class="bg-primary text-white text-center p-2">People</h4>
-<component type="typeof(Advanced.Blazor.PeopleList)" render-mode="Server" />
+<h4 class="bg-primary text-white text-center p-2">Component People</h4>
+
+<component type="typeof(Advanced.Blazor.PeopleList)" render-mode="Server" param-itemcount="5" param-selecttitle="@("Location")"/>
 
 <br />
 <br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
+
+<h4 class="bg-primary text-white text-center p-2">Code People</h4>
 
 <table class="table table-sm table-bordered table-striped">
     <thead>
