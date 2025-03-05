@@ -1,4 +1,26 @@
-﻿<table class="table table-sm table-bordered table-striped">
+﻿<TableTemplate>
+    <Header>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Dept</th>
+        <th>Location</th>
+    </tr>
+    </Header>
+    <Body>
+        @foreach (var p in People ?? Enumerable.Empty<Person>())
+        {
+        <tr @key="p.PersonId" style="@GetClass(p.Location?.City)">
+            <td>@p.PersonId</td>
+            <td>@p.Surname, @p.FirstName</td>
+            <td>@p.Department?.Name</td>
+            <td>@p.Location?.City, @p.Location?.State</td>
+        </tr>
+        }
+    </Body>
+</TableTemplate>
+
+@* <table class="table table-sm table-bordered table-striped">
     <thead>
         <tr>
             <th>ID</th>
@@ -10,7 +32,7 @@
     <tbody>
         @foreach (var p in People ?? Enumerable.Empty<Person>())
         {
-            <tr style="@GetClass(p.Location?.City)">
+            <tr @key="p.PersonId" style="@GetClass(p.Location?.City)">
                 <td>@p.PersonId</td>
                 <td>@p.Surname, @p.FirstName</td>
                 <td>@p.Department?.Name</td>
@@ -18,11 +40,18 @@
             </tr>
         }
     </tbody>
-</table>
+</table> *@
 
 <p>Component:</p>
 
-<SelectFilter Values="@Cities" Title="@SelectTitle" autofocus="true" name="city" requred="true" CustomEvent="@HandleCustom" />
+@* <SelectFilter Values="@Cities" Title="@SelectTitle" autofocus="true" name="city" requred="true" CustomEvent="@HandleCustom" /> *@
+
+<ThemeWrapper Theme="info" Title="Location Selector">
+    <SelectFilter Values="@Cities" Title="@SelectTitle" @bind-SelectedValue="SelectedCity" />
+
+    <button class="btn btn-primary mt-2" @onclick="@(() => SelectedCity = "Oakland")">Change</button>
+</ThemeWrapper>
+
 
 <br />
 <br />
@@ -60,9 +89,8 @@
     [Parameter]
     public string? SelectTitle { get; set; }
 
-    public void HandleCustom(string newValue)
-    {
-        SelectedCity = newValue;
-    }
-
+    // public void HandleCustom(string newValue)
+    // {
+    //     SelectedCity = newValue;
+    // }
 }

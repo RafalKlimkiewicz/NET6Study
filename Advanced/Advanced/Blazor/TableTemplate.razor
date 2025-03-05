@@ -1,0 +1,33 @@
+﻿@typeparam RowType
+
+<table class="table table-sm table-bordered table-striped">
+    @if (Header != null)
+    {
+        <thead>@Header</thead>
+    }
+    <tbody>
+        @if (RowData != null && RowTemplate != null)
+        {
+            @foreach (var item in RowData)
+            {
+                <tr>@RowTemplate(item)</tr>
+            }
+        }
+        @* @Body *@
+    </tbody>
+</table>
+
+@code
+{
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+
+    // [Parameter]
+    // public RenderFragment? Body { get; set; }
+
+    [Parameter]
+    public RenderFragment<RowType>? RowTemplate { get; set; }
+    
+    [Parameter]
+    public IEnumerable<RowType>? RowData { get; set; }
+}
