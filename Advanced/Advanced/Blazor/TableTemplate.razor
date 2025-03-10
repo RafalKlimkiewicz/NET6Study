@@ -1,11 +1,27 @@
 ﻿@typeparam RowType
+
+<link rel="stylesheet" href="errorBoundaries.css" />
+
 <div class="container-fluid">
     <div class="row p-2">
         <div class="col">
             <SelectFilter Title="@("Sort")" Values="@SortDirectionChoices" @bind-SelectedValue="SortDirectionSelection" />
         </div>
         <div class="col">
-            <SelectFilter Title="@("Highlight")" Values="@HighlightChoices()" @bind-SelectedValue="HighlightSelection" />
+            <ErrorBoundary @ref="boundary">
+                <ChildContent>
+                    <SelectFilter Title="@("Highlight")" Values="@HighlightChoices()" @bind-SelectedValue="HighlightSelection" />
+                </ChildContent>
+                <ErrorContent>
+                    <h6 class="bg-danger text-white text-center h-100 p-2">
+                        Inline error: Sales Selected
+                        <div>
+                            <button class="btn btn-light btn-sm m-2" @onclick="@(() => boundary?.Recover())">Recover</button>
+                        </div>
+                    </h6>
+                </ErrorContent>
+            </ErrorBoundary>
+
         </div>
     </div>
 </div>
@@ -29,6 +45,8 @@
 
 @code
 {
+    ErrorBoundary? boundary;
+
     [Parameter]
     public RenderFragment? Header { get; set; }
 
