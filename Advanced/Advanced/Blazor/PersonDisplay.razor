@@ -16,17 +16,17 @@ else
     </table>
 }
 
-<button class="btn btn-outline-primary" @onclick="@(() => HandleClick(false))">
+@* <button class="btn btn-outline-primary" @onclick="@(() => HandleClick(false))">
     pr
 </button>
 
 <button class="btn btn-outline-primary" @onclick="@(() => HandleClick(true))">
     nex
-</button>
-
-@* <button class="btn btn-outline-primary" @onclick="@HandleClick">
-    Invoke JS Function
 </button> *@
+
+<button class="btn btn-outline-primary" @onclick="@HandleClick">
+    Invoke JS Function
+</button> 
 
 @code {
 
@@ -46,7 +46,7 @@ else
 
     protected async override Task OnParametersSetAsync()
     {
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         if (Context != null)
         {
             Person = await Context.People.FirstOrDefaultAsync(p => p.PersonId == Id)
@@ -56,10 +56,10 @@ else
 
     public ElementReference RowReference { get; set; }
 
-    public async Task HandleClick(bool increament)
+    public async Task HandleClick()
     {
-        Person = null;
-        NavManager?.NavigateTo($"/person/{(increament ? Id + 1 : Id - 1)}");
-        //await JSRuntime!.InvokeVoidAsync("addTableRows", 2, RowReference);
+        //Person = null;
+        //NavManager?.NavigateTo($"/person/{(increament ? Id + 1 : Id - 1)}");
+        await JSRuntime!.InvokeVoidAsync("addTableRows", 2, RowReference);
     }
 }

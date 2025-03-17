@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@using Advanced.Services
 
 <div class="container-fluid">
     <div class="row">
@@ -11,6 +12,9 @@
                         @key
                     </MultiNavLink>
                 }
+                <button class="btn btn-secondary btn-block mt-5" @onclick="ToggleLinks">
+                    Toggle Links
+                </button>
             </div>
         </div>
         <div class="col">
@@ -20,6 +24,13 @@
 </div>
 
 @code {
+    [Inject]
+    public ToggleService? Toggler { get; set; }
+
+    [Inject]
+    public IJSRuntime? JSRuntime { get; set; }
+
+
     public Dictionary<string, string[]> NavLinks
        = new Dictionary<string, string[]> {
             {"People", new string[] {"/people", "/" } },
@@ -29,17 +40,20 @@
 
     public Dictionary<string, MultiNavLink> Refs = new Dictionary<string, MultiNavLink>();
 
-    private bool LinksEnabled  = true;
+    //private bool LinksEnabled  = true;
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && Toggler != null)
+        {
+            Toggler.EnrolComponents(Refs.Values);
+            await JSRuntime!.InvokeVoidAsync("createToggleButton",
+                DotNetObjectReference.Create(Toggler));
+        }
+    }
 
     public void ToggleLinks()
     {
-        //Toggler?.ToggleComponents();
-
-        LinksEnabled = !LinksEnabled;
-
-        foreach (var link in Refs.Values)
-        {
-            link.SetEnabled(LinksEnabled);
-        }
+        Toggler?.ToggleComponents();
     }
 }
