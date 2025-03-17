@@ -1,0 +1,45 @@
+﻿@inherits LayoutComponentBase
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <div class="d-grid gap-2">
+                @foreach (var key in NavLinks.Keys)
+                {
+                    <MultiNavLink class="btn btn-outline-primary btn-block"
+                    href="@NavLinks[key]" ActiveClass="btn-primary text-white" DisabledClasses="btn btn-dark text-light btn-block disabled" @ref="Refs[key]">
+                        @key
+                    </MultiNavLink>
+                }
+            </div>
+        </div>
+        <div class="col">
+            @Body
+        </div>
+    </div>
+</div>
+
+@code {
+    public Dictionary<string, string[]> NavLinks
+       = new Dictionary<string, string[]> {
+            {"People", new string[] {"/people", "/" } },
+            {"Departments", new string[] {"/depts", "/departments" } },
+            {"Details", new string[] { "/person" } }
+           };
+
+    public Dictionary<string, MultiNavLink> Refs = new Dictionary<string, MultiNavLink>();
+
+    private bool LinksEnabled  = true;
+
+    public void ToggleLinks()
+    {
+        //Toggler?.ToggleComponents();
+
+        LinksEnabled = !LinksEnabled;
+
+        foreach (var link in Refs.Values)
+        {
+            link.SetEnabled(LinksEnabled);
+        }
+    }
+}
